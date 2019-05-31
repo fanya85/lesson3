@@ -1,3 +1,5 @@
+import collections
+from collections import Counter
 # Задание 1
 # Дан список учеников, нужно посчитать количество повторений каждого имени ученика.
 students = [
@@ -7,13 +9,14 @@ students = [
   {'first_name': 'Маша'},
   {'first_name': 'Петя'},
 ]
+
+
 names = {}
 for student in students:
     names[student['first_name']] = names.get(student['first_name'], 0) + 1
 
 for k,v in sorted(names.items()):
     print('{}: {}'.format(k, v))
-
 
 # Пример вывода:
 # Вася: 1
@@ -30,13 +33,9 @@ students = [
   {'first_name': 'Маша'},
   {'first_name': 'Оля'},
 ]
-names = {}
-for student in students:
-    names[student['first_name']] = names.get(student['first_name'], 0) + 1
 
-max_count = max(names.values())
-name = [k for k, v in names.items() if v == max_count]
-print('Самое частое имя среди учеников: {}'.format(*name))
+names = [name['first_name'] for name in students]
+print("Самое частое имя среди учеников: {}".format(Counter(names).most_common(1)[0][0]))
 
 
 # Пример вывода:
@@ -55,20 +54,13 @@ school_students = [
     {'first_name': 'Оля'},
   ]
 ]
-i = 1
-for c in school_students:
-    students_name = {}
-    print(f"Самое частое имя в классе {i}: ", end="")
-    i += 1
-    answer=None
-    for x in c:
-        students_name[x['first_name']] = c.count(x)
-    for y, num in students_name.items():
-        if answer is None:
-            answer = y
-        if students_name[answer] < num:
-            answer = y
-    print(answer)
+i = 0
+for classes in school_students:
+  names = [name['first_name'] for name in classes]
+  i +=1
+  print("Самое частое имя в классе {}: {}".format(i, Counter(names).most_common(1)[0][0]))
+
+
 # Пример вывода:
 # Самое частое имя в классе 1: Вася
 # Самое частое имя в классе 2: Маша
@@ -90,7 +82,7 @@ for x in school:
     male = 0
     female = 0
     for y in x['students']:
-        if is_male.get(y['first_name']) is False:
+        if not is_male.get(y['first_name']):
             female += 1
         else:
             male += 1
@@ -113,16 +105,24 @@ is_male = {
   'Олег': True,
   'Миша': True,
 }
+
+
+count = {}
 for x in school:
     male = 0
     female = 0
     for y in x['students']:
-        if is_male.get(y['first_name']) is False:
+        if not is_male.get(y['first_name']):
             female += 1
         else:
             male += 1
-    
-    print(f"В классе {x['class']}: {female} девочки и {male} мальчика")
+    count[x["class"]] = [{"males": male}, {"females": female}]
+
+for c in count.keys():
+  if count[c][0]["males"] > count[c][1]["females"]:
+    print("Больше всего мальчиков в классе {}".format(c))
+  else:
+    print("Больше всего девочек в классе {}".format(c))
 
 # Пример вывода:
 # Больше всего мальчиков в классе 3c

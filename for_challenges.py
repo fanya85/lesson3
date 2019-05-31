@@ -24,7 +24,7 @@ is_male = {
   'Маша': False,
 }
 names = ['Оля', 'Петя', 'Вася', 'Маша']
-# for k,v in is_male.values():
+# for k,v in is_male.items():
 #     print(k, v)
 for name in names:
     print(name, is_male[name])
